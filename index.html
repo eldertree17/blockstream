@@ -179,7 +179,6 @@
 <header>
     <h1>Blockstream</h1>
     <span class="search-icon" onclick="navigateToSearch()">🔍</span> <!-- Search icon -->
-    <script>src="https://telegram.org/js/telegram-web-app.js"</script>
 </header>
 
 <body>
@@ -391,11 +390,6 @@
         });
         document.getElementById(page).classList.add('active'); // Show selected page
     }
-
-    function navigateToSearch() {
-        window.location.href = "http://127.0.0.1:5500/search.html#home";
-    }
-
     function showTab(tab) {
         const partnerTab = document.getElementById('partner');
         const blockstreamTab = document.getElementById('blockstream');
