@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockstream</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0 auto;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-width:100%;
+        }
+        .content {
+            padding: 20px;
+            flex-grow: 1;
+            margin-bottom: 50px; /* To prevent content overlap with the nav */
+            overflow-x: hidden;
+        }
+        header {
+            display: flex;
+            align-items: center; /* Center items vertically */
+            justify-content: space-between; /* Space between title and icon */
+            background-color: #1e1e1e; /* Grey header */
+            width: 100%; /* Full width */
+            height: 100px;
+            position: relative; /* Fixed position at top */
+            z-index: 1000; /* Ensure it stays above other content */
+        }
+        h1 {
+            margin: 0; /* Remove default margin */
+            font-size: 24px; /* Adjust font size as needed */
+            text-align: center; /* Center text */
+            flex-grow: 1; /* Allow title to take available space */
+        }
+        .search-icon {
+            font-size: 24px; /* Size of the search icon */
+            cursor: pointer; /* Pointer cursor on hover */
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            padding: 0px;
+            background-color: #1e1e1e;
+            position:absolute;
+            bottom: 0;
+            width:100%;
+        }
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 15px 20px;
+            transition: background-color 0.3s;
+        }
+        nav a:hover {
+            background-color: #333333;
+        }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+        .category {
+            margin-bottom: 20px;
+        }
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .videos {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 10px 0;
+        }
+        .video {
+            background-color: #1e1e1e;
+            height: 100%; /* Ensures the link fills the card */
+            width: 100%; /* Ensures the link fills the card */
+            color: white; /* Text color */
+            text-decoration: none; /* Remove underline */
+            border-radius: 0px;
+            width: 125px; /* Adjust as needed */
+            height: 175px;
+            flex: none; /* Prevents flex items from shrinking */
+            flex-shrink: 0; /* Prevents flex items from shrinking */
+            flex-direction: column; /* Stack image and text vertically */
+            align-items: center; /* Center items horizontally */
+        }
+        .video a:hover {
+            background-color: #444444; /* Change background on hover */
+        }
+        .video button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #333333;
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .video button:hover {
+            background-color: #444444;
+        }
+        .category button {
+            padding: 5px 10px;
+            background-color: #333333;
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .category button:hover {
+            background-color: rgba(51, 51, 51, 0.9);
+        }
+        /* New styles for tabs and task cards */
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 10px;
+            border-radius: 5px;
+            padding: 10px 10px;
+            background-color: #1e1e1e;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .tab.active {
+            background-color: #333333; /* Highlight active tab */
+        }
+        .dropdown {
+            background-color: #1e1e1e;
+            margin:0px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            max-width: 120px; /* Set a maximum width */
+            max-height: 20px;
+            border-radius: 10px; /* Optional: rounds corners */
+        }
+        .dropdown-content {
+            display: none; /* Hidden by default */
+            position: absolute;
+            background-color: rgba(30, 30, 30, 0.9); /* Semi-transparent background for dropdown */
+            min-width: 100px; /* Minimum width of dropdown */
+            z-index: 1; /* Ensure dropdown is above other content */
+        }
+        .dropdown:hover .dropdown-content {
+            display: block; /* Show dropdown on hover */
+        }
+        .dropdown-content a {
+            color: white; /* Text color for dropdown items */
+            padding: 12px 16px; /* Padding for dropdown items */
+            text-decoration: none; /* Remove underline */
+            display: block; /* Display as block for full width */
+        }
+        .dropdown-content a:hover {
+            background-color: rgba(51, 51, 51, 0.9); /* Darker on hover */
+        }
+    </style>
+        <script async src="https://telegram.org/js/telegram-widget.js?22" 
+        data-telegram-login="block_stream_bot" 
+        data-size="large" 
+        data-onauth="onTelegramAuth(user)" 
+        data-request-access="write"></script>
+        
+<script src="https://telegram.org/js/telegram-web-app.js?56"></script>
+
+</head>
+
+<header>
+    <h1>Blockstream</h1>
+    <span class="search-icon" onclick="navigateToSearch()">🔍</span> <!-- Search icon -->
+    <script>src="https://telegram.org/js/telegram-web-app.js"</script>
+</header>
+
+<body>
+    <div class="content" id="content">
+        <div id="home" class="page active">
+            <div class="tabs">
+                <div class="tab">TV Shows</div>
+                <div class="tab">Movies</div>
+                <div class="dropdown">
+                    <div class="tab">Categories</div>
+                    <div class="dropdown-content">
+                        <a href="#action">Action</a>
+                        <a href="#drama">Drama</a>
+                        <a href="#comedy">Comedy</a>
+                        <a href="#comedy">Horror</a>
+                        <a href="#comedy">Thriller</a>
+                        <a href="#comedy">War</a>
+                        <!-- Add more categories as needed -->
+                    </div>
+                </div>
+            </div>
+    </head>
+        <div class="category">
+            <div class="category-header">
+                <h3>Your List</h3>
+                <button onclick="alert('Navigate to Your List page')">See all</button>
+            </div>
+            <div class="videos">
+                <div class="video">
+                    <a href="watch.html?video=videos/openleaguepart1.mp4" style="display: block; text-decoration: none; color: inherit;">
+                        <img src="images/thumbnail.png" alt="Open League Part 1" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
+                    </a>
+                </div>
+                <div class="video">
+                    <a href="watch.html" style="display: block; text-decoration: none; color: inherit;">
+                        <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
+                    </a>
+                </div>
+                <div class="video">
+                    <a href="watch.html" style="display: block; text-decoration: none; color: inherit;">
+                        <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
+                    </a>
+                </div>
+                <div class="video">
+                    <a href="watch.html" style="display: block; text-decoration: none; color: inherit;">
+                        <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
+                    </a>
+                </div>
+                <div class="video">
+                    <a href="watch.html" style="display: block; text-decoration: none; color: inherit;">
+                        <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
+                    </a>
+                </div>
+                <div class="video">
+                    <a href="watch.html" style="display: block; text-decoration: none; color: inherit;">
+                        <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="category">
+            <div class="category-header">
+                <h3>Trending</h3>
+                <button onclick="alert('Navigate to Trending page')">See all</button>
+            </div>
+            <div class="videos">
+                <div class="video">
+                    <a href="watch.html?video=videos/openleaguepart1.mp4" style="display: block; text-decoration: none; color: inherit;">
+                        <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
+                    </a>
+                </div>
+                <div class="video">
+                    <a href="watch.html" style="display: block; text-decoration: none; color: inherit;">
+                        <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
+                    </a>
+                </div>
+                <div class="video">
+                    <a href="watch.html" style="display: block; text-decoration: none; color: inherit;">
+                        <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
+                    </a>
+                </div>
+                <div class="video">
+                    <a href="watch.html" style="display: block; text-decoration: none; color: inherit;">
+                        <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
+                    </a>
+                </div>
+                <div class="video">
+                    <a href="watch.html" style="display: block; text-decoration: none; color: inherit;">
+                        <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
+                    </a>
+                </div>
+                <div class="video">
+                    <a href="watch.html" style="display: block; text-decoration: none; color: inherit;">
+                        <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
+                    </a>
+                </div>
+                <div class="video">
+                    <a href="watch.html" style="display: block; text-decoration: none; color: inherit;">
+                        <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
+                    </a>
+                </div>
+                <div class="video">
+                    <a href="watch.html" style="display: block; text-decoration: none; color: inherit;">
+                        <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
+                    </a>
+                </div>
+                                <div class="video">
+                    <a href="watch.html" style="display: block; text-decoration: none; color: inherit;">
+                        <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="category">
+            <div class="category-header">
+                <h3>Recently Added</h3>
+                <button onclick="alert('Navigate to Recently Added page')">See all</button>
+            </div>
+            <div class="videos">
+                <div class="video">
+                    <a href="watch.html" style="display: block; text-decoration: none; color: inherit;">
+                        <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
+                    </a>
+                </div>
+                <div class="video">
+                    <a href="watch.html" style="display: block; text-decoration: none; color: inherit;">
+                        <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
+                    </a>
+                </div>
+                <div class="video">
+                    <a href="watch.html" style="display: block; text-decoration: none; color: inherit;">
+                        <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
+                    </a>
+                </div>
+                <div class="video">
+                    <a href="watch.html" style="display: block; text-decoration: none; color: inherit;">
+                        <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
+                    </a>
+                </div>
+                <div class="video">
+                    <a href="watch.html" style="display: block; text-decoration: none; color: inherit;">
+                        <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
+                    </a>
+                </div>
+                <div class="video">
+                    <a href="watch.html" style="display: block; text-decoration: none; color: inherit;">
+                        <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
+                    </a>
+                </div>
+                <div class="video">
+                    <a href="watch.html" style="display: block; text-decoration: none; color: inherit;">
+                        <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="about" class="page">
+        <h2>About</h2>
+        <p>Stay updated with the latest news and updates about our service.</p>
+    </div>
+</div>
+<footer>
+<nav>
+    <a href="index.html" onclick="showPage('home')">Home</a>
+    <a href="tasks.html" onclick ="showPage('tasks')">Tasks</a> <!-- Link to tasks.html -->
+    <a href="leaderboard.html" onclick="showPage('leaderboard')">Leaderboard</a>
+    <a href="about.html" onclick="showPage('about')">About</a> 
+</nav>
+</footer>
+<script>
+    const videos = [
+        { title: "My Favorite Movie" },
+        { title: "Blockbuster Hit" },
+        { title: "Classic Film" },
+        { title: "Top Chart Buster" },
+        { title: "Must-Watch Series" },
+        { title: "Latest Release" }
+    ];
+    function searchVideos() {
+        const query = document.querySelector('#search input').value.toLowerCase();
+        const resultsContainer = document.querySelector('#search .videos');
+        
+        // Clear previous results
+        resultsContainer.innerHTML = '';
+
+        // Filter videos based on the query
+        const results = videos.filter(video => video.title.toLowerCase().includes(query));
+
+        // Display results
+        results.forEach(video => {
+            const videoElement = document.createElement('div');
+            videoElement.classList.add('video');
+            videoElement.innerHTML = `<p>${video.title}</p>`;
+            resultsContainer.appendChild(videoElement);
+        });
+    }
+
+    function navigateToSearch() {
+        window.location.href = 'search.html'; // Redirects to search.html
+    }
+    function showPage(page) {
+        const pages = document.querySelectorAll('.page');
+        pages.forEach(p => {
+            p.classList.remove('active'); // Hide all pages
+        });
+        document.getElementById(page).classList.add('active'); // Show selected page
+    }
+
+    function navigateToSearch() {
+        window.location.href = "http://127.0.0.1:5500/search.html#home";
+    }
+
+    function showTab(tab) {
+        const partnerTab = document.getElementById('partner');
+        const blockstreamTab = document.getElementById('blockstream');
+        const tabs = document.querySelectorAll('.tab');
+
+        if (tab === 'partner') {
+            partnerTab.style.display = 'block';
+            blockstreamTab.style.display = 'none';
+            tabs[0].classList.add('active');
+            tabs[1].classList.remove('active');
+        } else {
+            partnerTab.style.display = 'none';
+            blockstreamTab.style.display = 'block';
+            tabs[0].classList.remove('active');
+            tabs[1].classList.add('active');
+        }
+    }
+    function showLeaderboardTab(tab) {
+    const contents = document.querySelectorAll('.leaderboard-content');
+    contents.forEach(content => {
+        content.classList.remove('active'); // Hide all tabs
+    });
+    document.getElementById(tab).classList.add('active'); // Show selected tab
+
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(t => {
+        t.classList.remove('active'); // Remove active class from all tabs
+    });
+    const activeTab = Array.from(tabs).find(t => t.textContent.trim().toLowerCase() === tab);
+    if (activeTab) {
+        activeTab.classList.add('active'); // Set active class on selected tab
+    }
+}
+</script>
+</script>
+
+</body>
+</html>
