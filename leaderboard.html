@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockstream</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden; /* Prevent body scrolling */
+        }
+        .banner {
+            padding: 15px 20px;
+            background-color: #1e1e1e;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border-radius: 5px; /* Optional: rounds corners */
+        }
+        header {
+            display: flex;
+            align-items: center; /* Center items vertically */
+            justify-content: space-between; /* Space between title and icon */
+            background-color: #1e1e1e; /* Grey header */
+            padding: 0px; /* Padding for the header */
+            height: 50px;
+            width: 100%; /* Full width */
+            position: relative; /* Fixed position at top */
+            z-index: 1000; /* Ensure it stays above other content */
+        }
+        h1 {
+            margin: 0; /* Remove default margin */
+            font-size: 24px; /* Adjust font size as needed */
+            text-align: center; /* Center text */
+            flex-grow: 1; /* Allow title to take available space */
+        }
+        .search-icon {
+            font-size: 24px; /* Size of the search icon */
+            cursor: pointer; /* Pointer cursor on hover */
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            padding: 0px;
+            background-color: #1e1e1e;
+            position:absolute;
+            bottom: 0;
+            left: 0px;; /* Allows the dashboard to be all the way to the left */
+            width: 100%;
+        }
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 15px 20px;
+            transition: background-color 0.3s;
+        }
+        nav a:hover {
+            background-color: #333333;
+        }
+        .content {
+            padding: 20px;
+            flex-grow: 1;
+            margin-bottom: 50px; /* To prevent content overlap with the nav */
+            overflow-y: auto; /* Allow scrolling in the content area */
+        }
+        .page { display: none; }
+        .page.active { display: block; }
+
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            background-color: #1e1e1e;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border-radius: 5px; /* Optional: rounds corners */
+        }
+        .tab.active {
+            background-color: #333333; /* Highlight active tab */
+        }
+        .leaderboard-content {
+            display: none;
+        }
+
+        .leaderboard-content.active {
+            display: block;
+        }
+
+        .leaderboard-table {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .column {
+            font-weight: bold;
+        }
+
+        .row {
+            display: contents; /* Allows columns to stack correctly */
+        }     
+    </style>
+</head>
+<header>
+    <h1>Blockstream</h1>
+    <span class="search-icon" onclick="navigateToSearch()">🔍</span> <!-- Search icon -->
+</header>
+<body>
+    <div class="content" id="content">
+        <div id="leaderboard" class="page active">
+            <div class="banner">
+                <div style="display: flex; align-items: center;">
+                    <img src="friend-icon.png" alt="Friend Icon" style="width: 24px; height: 24px; margin-right: 10px;">
+                    <span>Invite friends, earn points.</span>
+                </div>
+            </div>
+            <h2>Spread the love</h2>
+            <p>See how you rank based on the number of movies you've shared via Telegram.</p>
+            
+            <div id="teams" class="leaderboard-content active" style="display: block;">
+                <div class="leaderboard-table">
+                    <div class="column">10 teams</div>
+                    <div class="column">Team name</div>
+                    <div class="column">Total points</div>
+
+                    <div class="row">
+                        <div class="column">1</div>
+                        <div class="column">TON Society</div>
+                        <div class="column">1000</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="column">2</div>
+                        <div class="column">DOGE</div>
+                        <div class="column">900</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="column">3</div>
+                        <div class="column">OKX</div>
+                        <div class="column">800</div>
+                    </div>
+
+                    <!-- Add more teams as needed -->
+                </div>
+            </div>
+
+            <div id="global" class="leaderboard-content" style="display:none;">
+                <div class="leaderboard-table">
+                    <h3>Top Players</h3>
+                    <p>See the top players globally:</p>
+                    <div class="column">Rank</div>
+                    <div class="column">Username</div>
+                    <div class="column">Total Points</div>
+
+                    <div class="row">
+                        <div class="column">1</div>
+                        <div class="column">TON Society</div>
+                        <div class="column">1000</div>
+                    </div>                    
+
+                    <div class="row">
+                        <div class="column">2</div>
+                        <div class="column">DOGE</div>
+                        <div class="column">900</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="column">3</div>
+                        <div class="column">Binance</div>
+                        <div class="column">800</div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="tasks" class="page">
+                <h2>Tasks</h2>
+                <p>Complete tasks to earn points by following us on social media or completing quests.</p>
+                <div class="tabs">
+                    <div class="tab active" onclick="showTab('partner')">
+                        Partner Tasks (30)
+                    </div>
+                    <div class="tab" onclick="showTab('blockstream')">
+                        Blockstream Tasks (5)
+                    </div>
+             </div>
+        
+             <div id="partner" class="task-list" style="display: block;">
+                <div class="row">
+                    <div class="row">
+                        <div class="column">2</div>
+                        <div class="column">DOGE</div>
+                        <div class="column">900</div>
+                    </div>
+                </div>
+            </div>
+        
+            <div id="blockstream" class="task-list" style="display: block;">
+                <div class="task-card">
+                    <img src="logo4.png" alt="Task Logo" class="task-logo">
+                    <div class="task-details">
+                        <p class="task-title">Task A Title</p>
+                        <p class="task-points">Points: 30</p>
+                        <p class="task-completion">Completed: 1/1</p>
+                        <p class="task-participants">Participants: 10</p>
+                    </div>
+                </div>
+                <div class="task-card">
+                    <img src="logo5.png" alt="Task Logo" class="task-logo">
+                    <div class="task-details">
+                        <p class="task-title">Task B Title</p>
+                        <p class="task-points">Points: 25</p>
+                        <p class="task-completion">Completed: 2/2</p>
+                        <p class="task-participants">Participants: 5</p>
+                    </div>
+                </div>
+                <div class="task-card">
+                    <img src="logo6.png" alt="Task Logo" class="task-logo">
+                    <div class="task-details">
+                        <p class="task-title">Task C Title</p>
+                        <p class="task-points">Points: 15</p>
+                        <p class="task-completion">Completed: 0/1</p>
+                        <p class="task-participants">Participants: 3</p>
+                    </div>
+                </div>
+                <!-- Add more tasks as needed -->
+            </div>
+        
+        </div>
+            
+        <div id="leaderboard" class="page">
+            <div class="banner">
+                <div style="display: flex; align-items: center;">
+                    <img src="friend-icon.png" alt="Friend Icon" style="width: 24px; height: 24px; margin-right: 10px;">
+                    <span>Invite friends, earn points.</span>
+                </div>
+                <button style="margin-left: auto; background-color: #333333; color: white; border: none; padding: 5px 10px; cursor: pointer; transition: background-color 0.3s;">
+                    &gt;
+                </button>
+            </div>
+        
+            <h2>Spread the love</h2>
+            <p>See how you rank based on the number of movies you've shared via Telegram.</p>
+            
+            <div class="tabs">
+                <div class="tab active" onclick="showLeaderboardTab('teams')">
+                    Teams
+                </div>
+                <div class="tab" onclick="showLeaderboardTab('global')">
+                    Global
+                </div>
+                <div class="tab" onclick="showLeaderboardTab('friends')">
+                    Friends
+                </div>
+            </div>
+        
+            <div id="teams" class="leaderboard-content active">
+                <div class="leaderboard-table">
+                    <div class="column">10 teams</div>
+                    <div class="column">Team Name</div>
+                    <div class="column">Total Points</div>
+                    <div class="row">
+                        <div class="column">1</div>
+                        <div class="column">Team A</div>
+                        <div class="column">1000</div>
+                    </div>
+                    <div class="row">
+                        <div class="column">2</div>
+                        <div class="column">Team B</div>
+                        <div class="column">900</div>
+                    </div>
+                    <div class="row">
+                        <div class="column">3</div>
+                        <div class="column">Team C</div>
+                        <div class="column">800</div>
+                    </div>
+                    <!-- Add more teams as needed -->
+                </div>
+            </div>
+        
+            <div id="global" class="leaderboard-content" style="display: none;">
+                <div class="leaderboard-card">
+                    <p>Your Rank: 5</p>
+                    <p>Name: User</p>
+                    <p>Total Points: 1500</p>
+                </div>
+                <div class="leaderboard-table">
+                    <div class="column">1,000 Referees</div>
+                    <div class="column">Name</div>
+                    <div class="column">Total Points</div>
+                    <div class="row">
+                        <div class="column">1</div>
+                        <div class="column">User A</div>
+                        <div class="column">2000</div>
+                    </div>
+                    <div class="row">
+                        <div class="column">2</div>
+                        <div class="column">User B</div>
+                        <div class="column">1800</div>
+                    </div>
+                    <div class="row">
+                        <div class="column">3</div>
+                        <div class="column">User C</div>
+                        <div class="column">1700</div>
+                    </div>
+                    <!-- Add more users as needed -->
+                </div>
+            </div>
+        
+            <div id="friends" class="leaderboard-content" style="display: none;">
+                <div class="leaderboard-table">
+                    <div class="column">5 Friends</div>
+                    <div class="column">Name</div>
+                    <div class="column">Total Points</div>
+                        <div class="row">
+                            <div class="column">1</div>
+                            <div class="column">Friend A</div>
+                            <div class="column">1500</div>
+                        </div>
+                        <div class="row">
+                            <div class="column">2</div>
+                            <div class="column">Friend B</div>
+                            <div class="column">1400</div>
+                        </div>
+                        <div class="row">
+                            <div class="column">3</div>
+                            <div class="column">Friend C</div>
+                            <div class="column">1300</div>
+                        </div>
+                    <!-- Add more friends as needed -->
+                    </div>
+                </div>
+            </div>
+            
+    <footer>
+        <nav>
+           <a href="index.html" onclick ="showPage('home')">Home</a> 
+           <a href="tasks.html" onclick ="showPage('tasks')">Tasks</a> <!-- Link to tasks.html -->
+           <a href="leaderboard.html" onclick ="showPage('leaderboard')">Leaderboard</a> 
+           <a href="about.html" onclick="showPage('about')">About</a> 
+       </nav> 
+   </footer>
+
+   <script>
+       function navigateToSearch() { 
+           window.location.href = "search.html"; // Redirects to search.html 
+       }
+
+       function showLeaderboardTab(tab) {
+           const contents = document.querySelectorAll('.leaderboard-content');
+           contents.forEach(content => {
+               content.classList.remove('active'); // Hide all tabs
+           });
+           document.getElementById(tab).classList.add('active'); // Show selected tab
+
+           const tabs = document.querySelectorAll('.tab');
+           tabs.forEach(t => {
+               t.classList.remove('active'); // Remove active class from all tabs
+           });
+           const activeTab = Array.from(tabs).find(t => t.textContent.trim().toLowerCase() === tab);
+           if (activeTab) {
+               activeTab.classList.add('active'); // Set active class on selected tab
+           }
+       }
+
+       function showPage(page) {
+           const pages = document.querySelectorAll('.page');
+           pages.forEach(p => {
+               p.classList.remove('active'); // Hide all pages
+           });
+           document.getElementById(page).classList.add('active'); // Show selected page
+       }
+   </script>
+
+</body>
+</html>

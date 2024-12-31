@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden; /* Prevent body scrolling */
+        }
+        .content {
+            padding: 20px;
+            flex-grow: 1;
+            margin-bottom: 50px; /* To prevent content overlap with the nav */
+        }
+        header {
+            display: flex;
+            align-items: center; /* Center items vertically */
+            justify-content: space-between; /* Space between title and icon */
+            background-color: #1e1e1e; /* Grey header */
+            padding: 10px; /* Padding for the header */
+            width: 95%; /* Full width */
+            position: relative; /* Fixed position at top */
+            z-index: 1000; /* Ensure it stays above other content */
+        }
+        h1 {
+            margin: 0; /* Remove default margin */
+            font-size: 24px; /* Adjust font size as needed */
+            text-align: center; /* Center text */
+            flex-grow: 1; /* Allow title to take available space */
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            padding: 0px;
+            background-color: #1e1e1e;
+            position:absolute;
+            bottom: 0;
+            left: 0px;; /* Allows the dashboard to be all the way to the left */
+            width: 100%;
+    }
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 15px 20px;
+            transition: background-color 0.3s;
+        }
+        nav a:hover {
+            background-color: #333333;
+        }
+        .back-button {
+            background: none;
+            border: none;
+            color: #b9b9b9;
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .search-container {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+        }
+        .search-input {
+            border: none;
+            outline: none;
+            flex: 1;
+            padding: 5px;
+            color: grey;
+        }
+        .search-input::placeholder {
+            color: grey;
+        }
+        .search-icon {
+            color: grey;
+            margin-left: 5px;
+        }
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            border-bottom: none;
+            display: inline-block;
+            padding-bottom: 5px;
+            text-decoration: none;
+        }
+        .recommended-section {
+            margin-top: 10px;
+            padding:10px;
+        }
+        .games-container {
+           display: flex; /* Use flexbox for horizontal layout */
+           overflow-x: auto; /* Enable horizontal scrolling */
+           padding-bottom: 10px; /* Space below the games container */
+           gap: 10px; /* Space between cards */
+       }
+        .game {
+            flex-shrink: 0; /* Prevent shrinking of game cards */
+            background-color: #1e1e1e; 
+            border-radius: 5px; 
+            padding: 10px; 
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+            min-width: 130px; /* Minimum width for each game card */
+        }
+        .movies-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width:auto;
+        }
+        .movie {
+            display: flex;
+            align-items: center;
+            background: #1e1e1e;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .thumbnail {
+            width: 60px; 
+            height: 60px; 
+            background-color: #ccc; 
+            border-radius: 5px; 
+            margin-right: 10px; 
+        }
+        .title {
+           flex-grow :1; 
+        }
+       .play-icon {
+           width:50px; 
+           height:50px; 
+           background-color:#007bff; 
+           border-radius:50%; 
+           display:flex; 
+           justify-content:center; 
+           align-items:center; 
+           color:white; 
+           cursor:pointer; 
+        }
+        .search-results {
+           display:none; 
+        }
+        .result {
+           display:flex; 
+           flex-direction:column; 
+           align-items:center; 
+           margin:10 px; 
+        }
+        .result-thumbnail {
+           width:100 px; 
+           height:100 px; 
+           background-color :#ccc; 
+           border-radius:5 px; 
+           margin-bottom:5 px; 
+        }
+        .result-title {
+           text-align:center; 
+           font-weight:bold; 
+        }
+   </style>
+</head>
+<body>
+
+<div id="search">
+    <header>
+        <button class="back-button" onclick="goBack()">&lt;</button>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search movies, shows, or games" oninput="searchContent()" />
+            <span class="search-icon">🔍</span>
+        </div>
+    </header>
+
+    <div class="recommended-section">
+        <h3 class="section-title">Recommended Mobile Games</h3>
+        <div class="games-container">
+             <!-- Game Titles -->
+             <div class="game">
+                 <div class="thumbnail"></div>
+                 <div class="title">Game Title 1 <br><span>Action</span></div>
+             </div>
+             <div class="game">
+                 <div class="thumbnail"></div>
+                 <div class="title">Game Title 2 <br><span>Puzzle</span></div>
+             </div>
+             <div class="game">
+                 <div class="thumbnail"></div>
+                 <div class="title">Game Title 3 <br><span>Adventure</span></div>
+             </div>
+             <div class="game">
+                 <div class="thumbnail"></div>
+                 <div class="title">Game Title 4 <br><span>Adventure</span></div>
+             </div>
+             <div class="game">
+                 <div class="thumbnail"></div>
+                 <div class="title">Game Title 5 <br><span>Adventure</span></div>
+             </div>
+         </div>
+     </div>
+
+     <div class="recommended-section">
+         <h3 class="section-title">Recommended Movies and TV Shows</h3>
+         <div class="movies-container">
+             <!-- Movie Titles -->
+             <div class="movie">
+                 <div class="thumbnail"></div>
+                 <div class="title">Movie Title 1</div>
+                 <div class="play-icon">▶</div>
+             </div>
+             <div class="movie">
+                 <div class="thumbnail"></div>
+                 <div class="title">Movie Title 2</div>
+                 <div class="play-icon">▶</div>
+             </div>
+             <div class="movie">
+                 <div class="thumbnail"></div>
+                 <div class="title">Movie Title 3</div>
+                 <div class="play-icon">▶</div>
+             </div>
+         </div>
+     </div>
+
+     <!-- Search Results Section -->
+     <div class="search-results" id="searchResults">
+         <h3 class="section-title">Movies & TV</h3>
+         <!-- Search Result Titles -->
+         <div class="result">
+             <div class="result-thumbnail"></div>
+             <div class="result-title">Search Result Title 1</div>
+         </div>
+         <div class="result">
+             <div class="result-thumbnail"></div>
+             <div class="result-title">Search Result Title 2</div>
+         </div>
+         <div class="result">
+             <div class="result-thumbnail"></div>
+             <div class="result-title">Search Result Title 3</div>
+         </div>
+     </diV>
+
+      <!-- Search Results Section -->
+      <div class="search-results" id="searchResults">
+        <h3 class="section-title">Search Results</h3>
+        <!-- Dynamically generated search result titles will go here -->
+    </div>
+
+     <!-- Navigation Links in Footer -->
+<nav>
+    <a href="index.html" onclick="showPage('home')">Home</a>
+    <a href="tasks.html" onclick ="showPage('tasks')">Tasks</a> <!-- Link to tasks.html -->
+    <a href="leaderboard.html" onclick="showPage('leaderboard')">Leaderboard</a>
+    <a href="about.html" onclick="showPage('about')">About</a> 
+</nav>
+
+ </body>
+
+ <script>
+    // Sample game data for demonstration
+const games = [
+    { title: "Game Title 1", genre: "Action" },
+    { title: "Game Title 2", genre: "Puzzle" },
+    { title: "Game Title 3", genre: "Adventure" },
+    { title: "Game Title 4", genre: "RPG" },
+    { title: "Game Title 5", genre: "Strategy" },
+];
+
+// Function to navigate back to the previous page
+    function goBack() {
+        window.history.back(); // Navigate to the previous page
+    }
+
+// Function to handle search input
+function searchContent() {
+    const query = document.querySelector('.search-input').value.toLowerCase();
+    const resultsContainer = document.getElementById('searchResults');
+    
+    // Clear previous results
+    resultsContainer.innerHTML = '';
+
+    // Simulating search logic
+    if (query) {
+        const filteredGames = games.filter(game => game.title.toLowerCase().includes(query));
+        
+        if (filteredGames.length > 0) {
+            resultsContainer.style.display = 'block';
+            
+            filteredGames.forEach(game => {
+                const resultDiv = document.createElement('div');
+                resultDiv.classList.add('result');
+                
+                const thumbnailDiv = document.createElement('div');
+                thumbnailDiv.classList.add('result-thumbnail');
+                
+                const titleDiv = document.createElement('div');
+                titleDiv.classList.add('result-title');
+                titleDiv.textContent = game.title;
+
+                resultDiv.appendChild(thumbnailDiv);
+                resultDiv.appendChild(titleDiv);
+                resultsContainer.appendChild(resultDiv);
+            });
+        } else {
+            resultsContainer.style.display = 'none'; // Hide if no results found
+        }
+    } else {
+        resultsContainer.style.display = 'none'; // Hide if input is empty
+    }
+}
+</script>
+
+</html>
