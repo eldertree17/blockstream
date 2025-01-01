@@ -17,38 +17,16 @@ async function connectWallet() {
 }
 
 document.getElementById('connect-button').addEventListener('click', connectWallet);
-// Function to handle wallet connection
-async function connectWallet() {
-    // Fetch the wallets list
-    const walletsList = await connector.getWallets();
-    const embeddedWallet = walletsList.find(wallet => wallet.embedded);
-
-    if (embeddedWallet) {
-        // If the app is opened inside a wallet's browser, connect directly
-        connector.connect({ jsBridgeKey: embeddedWallet.jsBridgeKey });
-    } else {
-        // Otherwise, show wallet selection modal
-        const walletConnectionSource = {
-            universalLink: 'https://app.tonkeeper.com/ton-connect',
-            bridgeUrl: 'https://bridge.tonapi.io/bridge'
-        };
-
-        // Connect using the universal link
-        const universalLink = await connector.connect(walletConnectionSource);
-        
-        // Show QR code or deep link to the user
-        showQRCode(universalLink);
-    }
-}
 
 window.onload = async () => {
     // Fetch the wallets list
-    const walletsList = await connector.getWallets();
+    const walletsList = await tonConnect.getWallets();
     console.log(walletsList); // Debugging: see fetched wallets
 
     // Display the wallets options
     displayWalletOptions(walletsList);
 };
+
 // Function to show QR code (this is a placeholder, implement QR generation logic)
 function showQRCode(link) {
     const qrCodeDiv = document.getElementById('qr-code');
@@ -57,14 +35,14 @@ function showQRCode(link) {
 }
 
 // Subscribe to connection status changes
-connector.onStatusChange(walletInfo => {
+tonConnect.onStatusChange(walletInfo => {
     console.log('Connection status updated:', walletInfo);
     // Update UI based on new wallet info
 });
 
 // Function to send a transaction (you can call this after connecting)
 async function sendTransaction() {
-    if (!connector.connected) {
+    if (!tonConnect.connected) {
         alert('Please connect wallet to send the transaction!');
         return;
     }
@@ -84,7 +62,7 @@ async function sendTransaction() {
     };
 
     try {
-        const result = await connector.sendTransaction(transaction);
+        const result = await tonConnect.sendTransaction(transaction);
         alert('Transaction was sent successfully');
     } catch (e) {
         if (e instanceof UserRejectedError) {
@@ -95,10 +73,7 @@ async function sendTransaction() {
     }
 }
 
-// Event listener for connect button
-document.getElementById('connect-button').addEventListener('click', connectWallet);
-
-// Add event listener for send transaction button
+// Event listener for send transaction button
 document.getElementById('send-transaction-button').addEventListener('click', sendTransaction);
 
 function displayWalletOptions(walletsList) {
@@ -123,12 +98,12 @@ async function handleWalletSelection(walletInfo) {
     } = await import('@tonconnect/sdk');
 
     if (isWalletInfoRemote(walletInfo)) {
-        await connector.connect({
+        await tonConnect.connect({
             universalLink: walletInfo.universalLink,
             bridgeUrl: walletInfo.bridgeUrl
         });
     } else if (isWalletInfoCurrentlyInjected(walletInfo)) {
-        await connector.connect({
+        await tonConnect.connect({
             jsBridgeKey: walletInfo.jsBridgeKey
         });
     } else {
@@ -138,12 +113,12 @@ async function handleWalletSelection(walletInfo) {
 
 // Function to convert raw address to user-friendly format
 async function convertAddress() {
-    if (!connector.connected) {
+    if (!tonConnect.connected) {
         alert('Please connect wallet before converting address!');
         return;
     }
 
-    const rawAddress = connector.wallet.account.address; // Get raw address from connected wallet
+    const rawAddress = tonConnect.wallet.account.address; // Get raw address from connected wallet
     const userFriendlyAddress = toUserFriendlyAddress(rawAddress); // Convert to user-friendly format
 
     // Display user-friendly address
