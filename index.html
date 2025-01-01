@@ -195,7 +195,7 @@ data-onauth="onTelegramAuth(user)"
 data-request-access="write"></script>
 <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
 <script type="module">
-    import { TonConnect } from 'https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js';
+    import TonConnect from 'https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js';
 
     const tonConnect = new TonConnect({
         manifestUrl: 'https://your-app-url.com/tonconnect-manifest.json'
