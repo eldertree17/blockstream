@@ -239,6 +239,27 @@
       background: #019b3b;
     }
   </style>
+      <script type="module">
+        import { TonConnect } from 'https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js';
+
+        const tonConnect = new TonConnect({
+            manifestUrl: 'https://eldertree17.github.io/blockstream/about.html/tonconnect-manifest.json'
+        });
+
+        async function connectWallet() {
+            try {
+                const wallet = await tonConnect.connect();
+                console.log('Wallet connected:', wallet);
+                // Update UI or perform actions after successful connection
+            } catch (error) {
+                console.error('Failed to connect wallet:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('connect-button').addEventListener('click', connectWallet);
+        });
+    </script>
 </head>
 <body>
   <header>
@@ -256,8 +277,8 @@
     <div class="wallet-section">
       <h2>Connect wallet</h2>
         <p>Connect your wallet to access premium features</p>
-        <button id="connectWalletBtn">Connect Wallet</button>
-    </div>
+        <button id="connect-button">Connect Wallet</button>    
+      </div>
 
     <!-- Membership & Billing Section -->
     <div class="billing-section">
