@@ -166,7 +166,6 @@
             background-color: rgba(51, 51, 51, 0.9); /* Darker on hover */
         }
     </style>
-    <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
 <script>
     const videos = [
         { title: "My Favorite Movie" },
@@ -267,8 +266,7 @@
                         <a href="#comedy">War</a>
                         <!-- Add more categories as needed -->
                     </div>
-                    <div id="ton-connect-button"></div>
-                </div>
+\                </div>
             </div>
         </div>
         <div class="category">
@@ -422,14 +420,6 @@
     <a href="about.html" onclick="showPage('about')">About</a> 
 </nav>
 </footer>
-<script>
-    //To connect to the JS UI library
-    const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-        // Define the Manifest URL of your Connect
-        manifestUrl: "https://eldertree17.github.io/blockstream/index.html/tonconnect-manifest.json",
-        buttonRootId: "ton-connect-button"
-    });
-</script>
 <script>
     function navigateToSearch() { 
         window.location.href = "search.html"; // Redirects to search.html 
