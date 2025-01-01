@@ -1,5 +1,6 @@
 (async () => {
-    const { TonConnect } = await import('https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js');
+    const TonConnectModule = await import('https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js');
+    const TonConnect = TonConnectModule.default || TonConnectModule.TonConnect;
 
     const tonConnect = new TonConnect({
         manifestUrl: 'https://your-app-url.com/tonconnect-manifest.json'
