@@ -1,19 +1,22 @@
-import { toUserFriendlyAddress, TonConnect } from '@tonconnect/sdk';
+import { TonConnect } from '@tonconnect/sdk';
 
-// Initialize the TonConnect connector
-const connector = new TonConnect({
-    manifestUrl: 'https://myApp.com/assets/tonconnect-manifest.json'
+const tonConnect = new TonConnect({
+    manifestUrl: 'https://your-app-url.com/tonconnect-manifest.json'
 });
 
-window.onload = async () => {
-    // Fetch the wallets list
-    const walletsList = await connector.getWallets();
-    console.log(walletsList); // Debugging: see fetched wallets
+async function connectWallet() {
+    try {
+        const wallet = await tonConnect.connect();
+        console.log('Wallet connected:', wallet);
+        document.getElementById('send-transaction-button').style.display = 'block';
+        document.getElementById('disconnect-button').style.display = 'block';
+        document.getElementById('convert-address-button').style.display = 'block';
+    } catch (error) {
+        console.error('Failed to connect wallet:', error);
+    }
+}
 
-    // Display the wallets options
-    displayWalletOptions(walletsList);
-};
-
+document.getElementById('connect-button').addEventListener('click', connectWallet);
 // Function to handle wallet connection
 async function connectWallet() {
     // Fetch the wallets list
@@ -38,6 +41,14 @@ async function connectWallet() {
     }
 }
 
+window.onload = async () => {
+    // Fetch the wallets list
+    const walletsList = await connector.getWallets();
+    console.log(walletsList); // Debugging: see fetched wallets
+
+    // Display the wallets options
+    displayWalletOptions(walletsList);
+};
 // Function to show QR code (this is a placeholder, implement QR generation logic)
 function showQRCode(link) {
     const qrCodeDiv = document.getElementById('qr-code');

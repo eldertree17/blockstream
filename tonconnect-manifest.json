@@ -1,7 +1,5 @@
 {
-    "url": "<app-url>",                        
-    "name": "<app-name>",                      
-    "iconUrl": "<app-icon-url>",               
-    "termsOfUseUrl": "<terms-of-use-url>",     
-    "privacyPolicyUrl": "<privacy-policy-url>" 
+    "url": "https://eldertree17.github.io/blockstream/index.html",                        
+    "name": "blockstream",                      
+    "iconUrl": "file:///Users/adamdiaz/Desktop/Block%20Stream%20logo.jpeg"
   }
