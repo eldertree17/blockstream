@@ -1,4 +1,4 @@
-import { TonConnect } from '@tonconnect/sdk';
+import { TonConnect } from 'https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js';
 
 const tonConnect = new TonConnect({
     manifestUrl: 'https://your-app-url.com/tonconnect-manifest.json'
@@ -95,7 +95,7 @@ async function handleWalletSelection(walletInfo) {
     const { 
         isWalletInfoRemote, 
         isWalletInfoCurrentlyInjected 
-    } = await import('@tonconnect/sdk');
+    } = await import('https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js');
 
     if (isWalletInfoRemote(walletInfo)) {
         await tonConnect.connect({
