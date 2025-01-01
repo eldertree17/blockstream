@@ -165,15 +165,38 @@
         .dropdown-content a:hover {
             background-color: rgba(51, 51, 51, 0.9); /* Darker on hover */
         }
+            /* Button styles */
+            #connect-button,
+        #send-transaction-button,
+        #disconnect-button,
+        #convert-address-button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #333333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #connect-button:hover,
+        #send-transaction-button:hover,
+        #disconnect-button:hover,
+        #convert-address-button:hover {
+            background-color: #444444;
+        }
+        #qr-code {
+            margin-top: 20px;
+        }
     </style>
-        <script async src="https://telegram.org/js/telegram-widget.js?22" 
-        data-telegram-login="block_stream_bot" 
-        data-size="large" 
-        data-onauth="onTelegramAuth(user)" 
-        data-request-access="write"></script>
-        
-<script src="https://telegram.org/js/telegram-web-app.js?56"></script>
-
+    <script async src="https://telegram.org/js/telegram-widget.js?22" 
+    data-telegram-login="block_stream_bot" 
+    data-size="large" 
+    data-onauth="onTelegramAuth(user)" 
+    data-request-access="write"></script>
+    
+    <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js" type="module" defer></script>
+    <script type="module" src="path/to/main.js" defer></script> <!-- Include your main app script -->
+    <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
 </head>
 
 <header>
@@ -182,6 +205,13 @@
 </header>
 
 <body>
+    <button id="connect-button">Connect Wallet</button>
+    <button id="send-transaction-button" style="display:none;">Send Transaction</button>
+    <button id="disconnect-button" style="display:none;">Disconnect Wallet</button> <!-- Disconnect button -->
+    <button id="convert-address-button" style="display:none;">Convert Address</button> <!-- Convert address button -->
+    <div id="qr-code" style="display:none;"></div> <!-- Placeholder for QR code -->
+    <div id="user-friendly-address" style="margin-top: 20px;"></div> <!-- Placeholder for user-friendly address -->
+
     <div class="content" id="content">
         <div id="home" class="page active">
             <div class="tabs">
@@ -200,7 +230,7 @@
                     </div>
                 </div>
             </div>
-    </head>
+        </div>
         <div class="category">
             <div class="category-header">
                 <h3>Your List</h3>
@@ -286,7 +316,7 @@
                         <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
                     </a>
                 </div>
-                                <div class="video">
+                <div class="video">
                     <a href="watch.html" style="display: block; text-decoration: none; color: inherit;">
                         <img src="images/thumbnail.png" alt="My Favorite Movie" style="width: 125px; height: auto;"> <!-- Ensure image fills the card -->
                     </a>
@@ -352,79 +382,5 @@
     <a href="about.html" onclick="showPage('about')">About</a> 
 </nav>
 </footer>
-<script>
-    const videos = [
-        { title: "My Favorite Movie" },
-        { title: "Blockbuster Hit" },
-        { title: "Classic Film" },
-        { title: "Top Chart Buster" },
-        { title: "Must-Watch Series" },
-        { title: "Latest Release" }
-    ];
-    function searchVideos() {
-        const query = document.querySelector('#search input').value.toLowerCase();
-        const resultsContainer = document.querySelector('#search .videos');
-        
-        // Clear previous results
-        resultsContainer.innerHTML = '';
-
-        // Filter videos based on the query
-        const results = videos.filter(video => video.title.toLowerCase().includes(query));
-
-        // Display results
-        results.forEach(video => {
-            const videoElement = document.createElement('div');
-            videoElement.classList.add('video');
-            videoElement.innerHTML = `<p>${video.title}</p>`;
-            resultsContainer.appendChild(videoElement);
-        });
-    }
-
-    function navigateToSearch() {
-        window.location.href = 'search.html'; // Redirects to search.html
-    }
-    function showPage(page) {
-        const pages = document.querySelectorAll('.page');
-        pages.forEach(p => {
-            p.classList.remove('active'); // Hide all pages
-        });
-        document.getElementById(page).classList.add('active'); // Show selected page
-    }
-    function showTab(tab) {
-        const partnerTab = document.getElementById('partner');
-        const blockstreamTab = document.getElementById('blockstream');
-        const tabs = document.querySelectorAll('.tab');
-
-        if (tab === 'partner') {
-            partnerTab.style.display = 'block';
-            blockstreamTab.style.display = 'none';
-            tabs[0].classList.add('active');
-            tabs[1].classList.remove('active');
-        } else {
-            partnerTab.style.display = 'none';
-            blockstreamTab.style.display = 'block';
-            tabs[0].classList.remove('active');
-            tabs[1].classList.add('active');
-        }
-    }
-    function showLeaderboardTab(tab) {
-    const contents = document.querySelectorAll('.leaderboard-content');
-    contents.forEach(content => {
-        content.classList.remove('active'); // Hide all tabs
-    });
-    document.getElementById(tab).classList.add('active'); // Show selected tab
-
-    const tabs = document.querySelectorAll('.tab');
-    tabs.forEach(t => {
-        t.classList.remove('active'); // Remove active class from all tabs
-    });
-    const activeTab = Array.from(tabs).find(t => t.textContent.trim().toLowerCase() === tab);
-    if (activeTab) {
-        activeTab.classList.add('active'); // Set active class on selected tab
-    }
-}
-</script>
-</script>
-
 </body>
 </html>

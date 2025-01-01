@@ -1,103 +1,334 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - Blockstream</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #ffffff;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden; /* Prevent body scrolling */
-        }
-        .content {
-            padding: 20px;
-            flex-grow: 1;
-            margin-bottom: 50px; /* To prevent content overlap with the nav */
-            overflow-y: auto; /* Allow scrolling in the content area */
-        }
-        header {
-            display: flex;
-            align-items: center; /* Center items vertically */
-            justify-content: space-between; /* Space between title and icon */
-            background-color: #1e1e1e; /* Grey header */
-            padding: 0px; /* Padding for the header */
-            width: 100%; /* Full width */
-            height: 50px;
-            position: relative; /* Fixed position at top */
-            z-index: 1000; /* Ensure it stays above other content */
-        }
-        h1 {
-            margin: 0; /* Remove default margin */
-            font-size: 24px; /* Adjust font size as needed */
-            text-align: center; /* Center text */
-            flex-grow: 1; /* Allow title to take available space */
-        }
-        nav {
-            display: flex;
-            justify-content: center;
-            padding: 0px;
-            background-color: #1e1e1e;
-            position:absolute;
-            bottom: 0;
-            width:100%;
-        }
-        nav a {
-            color: #ffffff;
-            text-decoration: none;
-            padding: 15px 20px;
-            transition: background-color 0.3s;
-        }
-        nav a:hover {
-            background-color: #333333;
-        }
-        .search-icon {
-            font-size: 24px; /* Size of the search icon */
-            cursor: pointer; /* Pointer cursor on hover */
-        }
-    </style>
-</head>
-<header>
-    <h1>Blockstream</h1>
-    <span class="search-icon" onclick="navigateToSearch()">🔍</span> <!-- Search icon -->
-</header>
-<body>
-    <div class="content" id="content">
-        <div id="about" class="page active">
-            <h2>Earn</h2>
-            <p>Complete quests, join activities, and share content to earn rewards</p>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My account</title>
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
 
-        </div>
+    body {
+      background-color: #1e1e1e;
+      color: #fff;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    /* Membership & Billing Section */
+    .billing-section {
+      background: #333;
+      border-radius: 10px;
+      padding: 15px 20px;
+      width: 100%;
+    }
+
+    .billing-section h2 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .billing-info {
+      margin-bottom: 15px;
+    }
+
+    .billing-info p {
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+    }
+
+    .billing-info a {
+      color: #0177ff;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .billing-info a:hover {
+      text-decoration: underline;
+    }
+
+    .billing-section button {
+      background: #ff4d4d;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .billing-section button:hover {
+      background: #cc0000;
+    }
+
+    /* Main Container */
+    .container {
+      width: 95%;
+      max-width: 400px;
+      margin: 20px auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .content {
+      padding: 20px;
+      flex-grow: 1;
+      margin-bottom: 50px; /* To prevent content overlap with the nav */
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      background-color: #262626;
+      padding: 10px;
+      text-align: center;
+      border-bottom: 2px solid #333;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      color: #fff;
+    }
+
+        /* Member Since Tag */
+    .member-since {
+      width: 100%;
+      text-align: center;
+      font-size: 1rem;
+      color: #aaa;
+      margin-bottom: 10px;
+    }
+
+    /* Wallet Connection */
+    .wallet-section {
+      background: #333;
+      border-radius: 10px;
+      padding: 15px 20px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .wallet-section h2 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .wallet-section button {
+      background: #0177ff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .wallet-section button:hover {
+      background: #005fcc;
+    }
+
+    /* Payment Section */
+    .payment-section {
+      background: #333;
+      border-radius: 10px;
+      padding: 15px 20px;
+      width: 100%;
+    }
+
+    nav {
+    display: flex;
+    justify-content: center;
+    padding: 0px;
+    background-color: #1e1e1e;
+    position:fixed;
+    bottom: 0;
+    left: 0px;; /* Allows the dashboard to be all the way to the left */
+    width: 100%;
+    }
+
+    nav a {
+      color: #ffffff;
+      text-decoration: none;
+      padding: 15px 20px;
+      transition: background-color 0.3s;
+    }
+
+    nav a:hover {
+      background-color: #333333;
+    }
+
+    .payment-section h2 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .payment-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .payment-options button {
+      background: #444;
+      border: 1px solid #555;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .payment-options button:hover {
+      background: #555;
+    }
+
+    /* Rewards Section */
+    .rewards-section {
+      background: #333;
+      border-radius: 10px;
+      padding: 15px 20px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .rewards-section h2 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .rewards-section .reward-card {
+      background: #444;
+      border-radius: 10px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .rewards-section .reward-card p {
+      font-size: 0.9rem;
+    }
+
+    .rewards-section .reward-card button {
+      background: #01c851;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .rewards-section .reward-card button:hover {
+      background: #019b3b;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>My accounts</h1>
+  </header>
+
+  <div class="container">
+    <!-- Member Since Tag -->
+    <div class="member-since">
+      Member since January 2023
     </div>
 
+  <div class="container">
+    <!-- Wallet Section -->
+    <div class="wallet-section">
+      <h2>Connect wallet</h2>
+        <p>Connect your wallet to access premium features</p>
+        <button id="connectWalletBtn">Connect Wallet</button>
+    </div>
+
+    <!-- Membership & Billing Section -->
+    <div class="billing-section">
+        <h2>Membership & Billing</h2>
+        <div class="billing-info">
+          <p><strong>Name:</strong> John Doe</p>
+          <p><strong>Password:</strong> ••••••••</p>
+          <p><strong>Phone:</strong> +1-234-567-890</p>
+          <p><strong>Payment Method:</strong> Visa **** 4242</p>
+          <a href="#">View Payment Details</a>
+        </div>
+        <button id="cancelMembershipBtn">Cancel Membership</button>
+      </div>
+    
+    <!-- Payment Section -->
+    <div class="payment-section">
+      <h2>Subscription payment options</h2>
+      <div class="payment-options">
+        <button id="payWithFiat">Bank Card</button>
+        <button id="payWithCrypto">Crypto</button>
+        <button id="payWithTelegramStars">Telegram Stars</button>
+      </div>
+    </div>
+
+    <!-- Rewards Section -->
+    <div class="rewards-section">
+      <h2>Claim rewards</h2>
+      <div class="reward-card">
+        <p>🎉 You have 5 reward points!</p>
+        <button id="claimRewardsBtn">Claim Rewards</button>
+      </div>
+    </div>
+  </div>
+
+  <div>
     <footer>
-        <nav>
-           <a href="index.html" onclick="showPage('home')">Home</a> 
-           <a href="tasks.html" onclick ="showPage('tasks')">Tasks</a> <!-- Link to tasks.html -->
-           <a href="leaderboard.html" onclick="showPage('leaderboard')">Leaderboard</a>
-           <a href="about.html" onclick="showPage('about')">About</a> 
-       </nav> 
-   </footer>
+    <nav>
+        <a href="index.html" onclick="showPage('home')">Home</a>
+        <a href="tasks.html" onclick ="showPage('tasks')">Tasks</a> <!-- Link to tasks.html -->
+        <a href="leaderboard.html" onclick="showPage('leaderboard')">Leaderboard</a>
+        <a href="about.html" onclick="showPage('about')">About</a> 
+    </nav>
+    </footer>
+    </div>
 
-   <script>
-       function navigateToSearch() { 
-           window.location.href = 'search.html'; // Redirects to search.html 
-       }
 
-       function showPage(page) {
-           const pages = document.querySelectorAll('.page');
-           pages.forEach(p => {
-               p.classList.remove('active'); // Hide all pages
-           });
-           document.getElementById(page).classList.add('active'); // Show selected page
-       }
-   </script>
+  <script>
+    // Handle Wallet Connection
+    document.getElementById('connectWalletBtn').addEventListener('click', () => {
+      alert('Wallet connected successfully!');
+    });
 
+    // Handle Fiat Payment
+    document.getElementById('payWithFiat').addEventListener('click', () => {
+      alert('Redirecting to Fiat payment gateway...');
+    });
+
+    // Handle Crypto Payment
+    document.getElementById('payWithCrypto').addEventListener('click', () => {
+      alert('Redirecting to Crypto payment gateway...');
+    });
+
+    // Handle Telegram Stars Payment
+    document.getElementById('payWithTelegramStars').addEventListener('click', () => {
+      alert('Redirecting to Telegram Stars payment gateway...');
+    });
+
+    // Claim Rewards
+    document.getElementById('claimRewardsBtn').addEventListener('click', () => {
+      alert('Rewards claimed successfully!');
+    });
+  </script>
 </body>
 </html>
