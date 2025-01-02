@@ -1,8 +1,8 @@
 'use client'
 
-import { useTonConnectUI } from "@tonconnect/ui-react";
-import { useEffect, useState, useCallback } from "react";
-import { Address } from "ton"; // Import Address from the appropriate library
+import { useState, useEffect, useCallback } from 'react';
+import { useTonConnectUI } from '@tonconnect/ui-react';
+import { Address } from "@ton/core";
 
 export default function Home() {
   const [tonConnectUI] = useTonConnectUI();
@@ -15,13 +15,13 @@ export default function Home() {
     setIsLoading(false);
   }, []);
 
-const handleWalletDisconnection = useCallback(() => {
-  setTonWalletAddress(null);
-  console.log("Wallet disconnected successfully!");
-  setIsLoading(false);
+  const handleWalletDisconnection = useCallback(() => {
+    setTonWalletAddress(null);
+    console.log("Wallet disconnected successfully!");
+    setIsLoading(false);
   }, []);
 
-  useEffect(() => { 
+  useEffect(() => {
     const checkWalletConnection = async () => {
       if (tonConnectUI.account?.address) {
         handleWalletConnection(tonConnectUI.account?.address);
@@ -30,55 +30,54 @@ const handleWalletDisconnection = useCallback(() => {
       }
     };
 
-  checkWalletConnection();
+    checkWalletConnection();
 
-  const unsubscribe = tonConnectUI.onStatusChange((wallet) => {
-    if (wallet) {
-      handleWalletConnection(wallet.account.address);
-    } else {
-      handleWalletDisconnection();
-    }
-  });
+    const unsubscribe = tonConnectUI.onStatusChange((wallet) => {
+      if (wallet) {
+        handleWalletConnection(wallet.account.address);
+      } else {
+        handleWalletDisconnection();
+      }
+    });
 
     return () => {
       unsubscribe();
     };
-
   }, [tonConnectUI, handleWalletConnection, handleWalletDisconnection]);
 
-    const handleWalletAction = async () => {
-      if (tonConnectUI.connected) {
-        setIsLoading(true);
-        await tonConnectUI.disconnect();
-      } else {
-        await tonConnectUI.openModal();
-      }
-    };
-
-    const formatAddress = (address: string) => {
-      const tempAddress = Address.parse(address).toString();
-      return `${tempAddress.slice(0, 4)}...${tempAddress.slice(-4)}`;
-    };
-
-    if (isLoading) {
-      return (
-        <main className="flex min-h-screen flex-col items-center justify-center">
-          <div className="bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded">
-            Loading...
-          </div>
-        </main>
-      );
+  const handleWalletAction = async () => {
+    if (tonConnectUI.connected) {
+      setIsLoading(true);
+      await tonConnectUI.disconnect();
+    } else {
+      await tonConnectUI.openModal();
     }
+  };
+
+  const formatAddress = (address: string) => {
+    const tempAddress = Address.parse(address).toString();
+    return `${tempAddress.slice(0, 4)}...${tempAddress.slice(-4)}`;
+  };
+
+  if (isLoading) {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center">
+        <div className="bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded">
+          Loading...
+        </div>
+      </main>
+    );
+  }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center"> 
+    <main className="flex min-h-screen flex-col items-center justify-center">
       <h1 className="text-4xl font-bold mb-8">TON Connect Demo</h1>
       {tonWalletAddress ? (
         <div className="flex flex-col items-center">
           <p className="mb-4">Connected: {formatAddress(tonWalletAddress)}</p>
           <button
             onClick={handleWalletAction}
-            className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
           >
             Disconnect Wallet
           </button>
@@ -88,9 +87,9 @@ const handleWalletDisconnection = useCallback(() => {
           onClick={handleWalletAction}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
-          Connect Wallet
+          Connect TON Wallet
         </button>
-      )} 
-      </main> 
+      )}
+    </main>
   );
 }
